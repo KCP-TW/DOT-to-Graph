@@ -1,7 +1,6 @@
 /* global vis */
 // provide data in the DOT language
 
-
 var parsedData = vis.network.convertDot("owo {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 7 }");
 
 var data = {
@@ -30,3 +29,16 @@ window.genGraph = function(DOTstring) {
     };
     network.setData(data);
 };
+
+
+network.on('click', function(params) {
+    var options = {
+        scale: 1,
+        animation: { // -------------------> can be a boolean too!
+            duration: 300,
+            easingFunction: "easeInQuad"
+        }
+    }
+
+    if (params.nodes[0]) network.focus(params.nodes[0],options);
+})
