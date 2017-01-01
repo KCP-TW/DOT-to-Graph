@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>DOT to Graph</title>
+    <meta charset="utf8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//cdn.rawgit.com/TeaMeow/TocasUI/master/dist/tocas.min.css">
+
+    <style type="text/css">
+        #mynetwork {
+            width: 100%;
+            height: 100%;
+            /*border: 1px solid lightgray;*/
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="ts menu large pure">
+        <div class="ts container">
+            <a class="header item" href="#">DOT to Graph</a>
+        </div>
+    </nav>
+    </header>
+    <!-- NAV BAR -->
+    <div class="ts stackable grid container">
+        <div class="sixteen wide column ts raised segment">
+            <div id="mynetwork"></div>
+        </div>
+        <div class="sixteen wide column ts raised segment">
+            <button class="ts top attached button" onclick="genGraph(document.getElementById('DOTinput').value);">產生 Graph</button>
+            <div class="ts resizable input fluid">
+                <textarea id="DOTinput" placeholder="輸入DOT">owo {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }</textarea>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script>
+    /*global genGraph*/
+    genGraph();
+</script>
+
+</html>
