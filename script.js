@@ -1,26 +1,42 @@
-/* global vis */
-// provide data in the DOT language
+var network;
+init();
 
-var parsedData = vis.network.convertDot("owo {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 7 }");
+function init() {
+    /* global vis $ firebase*/
+    // provide data in the DOT language
+    var DOTstring = "owo {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 7 }";
+    if (window.location.search != "") {
 
-var data = {
-    nodes: parsedData.nodes,
-    edges: parsedData.edges
-};
+        firebase.database().ref('/DOTstrings/' + window.location.search.substring(1)).once('value').then(function(snapshot) {
+            DOTstring = snapshot.val().DOTstring;
+            genGraph(DOTstring);
+            document.getElementById("DOTinput").value = DOTstring;
+            document.getElementById("loading").className = "ts dimmer";
+        });
+    }
+    else {
+        document.getElementById("loading").className = "ts dimmer";
+    }
+    var parsedData = vis.network.convertDot(DOTstring);
 
-var options = parsedData.options;
+    var data = {
+        nodes: parsedData.nodes,
+        edges: parsedData.edges
+    };
 
-// you can extend the options like a normal JSON variable:
-options.nodes = {
-    color: 'red'
-};
+    var options = parsedData.options;
 
-var container = document.getElementById('mynetwork');
-// create a network
-var network = new vis.Network(container, data, options);
+    // you can extend the options like a normal JSON variable:
+    options.nodes = {
+        color: 'red'
+    };
 
-window.genGraph = function(DOTstring) {
+    var container = document.getElementById('mynetwork');
+    // create a network
+    network = new vis.Network(container, data, options);
+}
 
+function genGraph(DOTstring) {
     var parsedData = vis.network.convertDot(DOTstring);
 
     var data = {
@@ -30,6 +46,27 @@ window.genGraph = function(DOTstring) {
     network.setData(data);
 };
 
+function submit(DOTstring) {
+    document.getElementById("submit").disabled = true;
+    var uuid = guid();
+    firebase.database().ref('DOTstrings/' + uuid).set({
+        DOTstring: DOTstring
+    }).then(() => {
+        document.getElementById("respURL").innerHTML = window.location.origin + window.location.pathname + "?" + uuid;
+        document.getElementById("msgSubmit").style.display = "inline";
+        document.getElementById("submit").disabled = false;
+    });
+
+}
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
 
 network.on('click', function(params) {
     var options = {
@@ -40,5 +77,5 @@ network.on('click', function(params) {
         }
     }
 
-    if (params.nodes[0]) network.focus(params.nodes[0],options);
+    if (params.nodes[0]) network.focus(params.nodes[0], options);
 })
