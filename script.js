@@ -5,17 +5,18 @@ function init() {
     /* global vis $ firebase*/
     // provide data in the DOT language
     var DOTstring = "owo {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 7 }";
-    if (window.location.search != "") {
-
-        firebase.database().ref('/DOTstrings/' + window.location.search.substring(1)).once('value').then(function(snapshot) {
+    var GUIDRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
+    var result = window.location.search.substring(1).match(GUIDRegex);
+    if (result) {
+        firebase.database().ref('/DOTstrings/' + result[0]).once('value').then(function(snapshot) {
             DOTstring = snapshot.val().DOTstring;
             genGraph(DOTstring);
             document.getElementById("DOTinput").value = DOTstring;
-            document.getElementById("loading").className = "ts dimmer";
+            document.getElementById("loading").classList.toggle('active');
         });
     }
     else {
-        document.getElementById("loading").className = "ts dimmer";
+        document.getElementById("loading").classList.toggle('active');
     }
     var parsedData = vis.network.convertDot(DOTstring);
 
