@@ -2,8 +2,9 @@ var network;
 init();
 
 function init() {
-    /* global vis $ firebase*/
+    /* global vis firebase Clipboard*/
     // provide data in the DOT language
+    new Clipboard('#btnCopy');
     var DOTstring = "owo {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 7 }";
     var GUIDRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
     var result = window.location.search.substring(1).match(GUIDRegex);
@@ -53,7 +54,7 @@ function submit(DOTstring) {
     firebase.database().ref('DOTstrings/' + uuid).set({
         DOTstring: DOTstring
     }).then(() => {
-        document.getElementById("respURL").innerHTML = window.location.origin + window.location.pathname + "?" + uuid;
+        document.getElementById("respURL").value = window.location.origin + window.location.pathname + "?" + uuid;
         document.getElementById("msgSubmit").style.display = "inline";
         document.getElementById("submit").disabled = false;
     });

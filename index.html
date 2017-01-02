@@ -52,7 +52,13 @@
         </div>
         <div id="msgSubmit" class="ts positive message" style="display:none">
             <div class="header">上傳成功！</div>
-            <p id="respURL"></p>
+            <br>
+            <div class="ts action input">
+                <input type="text" id="respURL" readonly>
+                <button id="btnCopy" class="ts icon button" data-tooltip="Copy to clipboard" data-clipboard-target="#respURL" onclick="this.setAttribute('data-tooltip','Copied!');" onmouseout="this.setAttribute('data-tooltip','Copy to clipboard');">
+                    <i class="icon copy"></i>
+                </button>
+            </div>
         </div>
         <div class="sixteen wide column ts raised segment">
 
@@ -67,6 +73,7 @@
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
 <script type="text/javascript" src="script.js"></script>
 <script>
     /*global genGraph*/
