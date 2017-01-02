@@ -4,6 +4,22 @@ init();
 function init() {
     /* global vis firebase Clipboard*/
     // provide data in the DOT language
+    var config = {
+        apiKey: "AIzaSyD6MfWQvuEEz4uPONHanngxGSV1ocqHWmM",
+        authDomain: "dot-to-graph.firebaseapp.com",
+        databaseURL: "https://dot-to-graph.firebaseio.com",
+        storageBucket: "dot-to-graph.appspot.com",
+        messagingSenderId: "512623758396"
+    };
+    firebase.initializeApp(config);
+    firebase.auth().signInAnonymously().catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+    });
+
+
     new Clipboard('#btnCopy');
     var DOTstring = "owo {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 7 }";
     var GUIDRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
@@ -46,7 +62,7 @@ function genGraph(DOTstring) {
         edges: parsedData.edges
     };
     network.setData(data);
-};
+}
 
 function submit(DOTstring) {
     document.getElementById("submit").disabled = true;
@@ -77,7 +93,7 @@ network.on('click', function(params) {
             duration: 300,
             easingFunction: "easeInQuad"
         }
-    }
+    };
 
     if (params.nodes[0]) network.focus(params.nodes[0], options);
-})
+});
